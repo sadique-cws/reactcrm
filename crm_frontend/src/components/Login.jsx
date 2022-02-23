@@ -6,7 +6,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 
-export default function InsertPost() {
+export default function InsertPost(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
    
@@ -30,6 +30,7 @@ export default function InsertPost() {
             if(response.status == 200){
                 localStorage.setItem("isLogined",true);
                 localStorage.setItem("userData", JSON.stringify(response.data));
+                props.setLogin(true);
                 navigate("/");
             }
             else{

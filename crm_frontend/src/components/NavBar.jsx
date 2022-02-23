@@ -7,14 +7,17 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from 'react-router-dom';
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import {useNavigate} from 'react-router-dom'
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (props) => {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -28,6 +31,13 @@ const ResponsiveAppBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const logout = () => {
+    localStorage.clear();
+    props.setLogin(false);
+    navigate("/login");
+    
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -90,17 +100,17 @@ const ResponsiveAppBar = () => {
           </Typography>
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {(localStorage.getItem("isLogined") && <Button component={ Link } to="/insert" sx={{ my: 2, color: 'white', display: 'block' }}>Insert Post</Button>)}
-              <Button component={ Link } to="/register" sx={{ my: 2, color: 'white', display: 'block' }}>Signup</Button>
-              <Button component={ Link } to="/login" sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button>
-          </Box>
+              {(localStorage.getItem("isLogined") == "true" && <Button component={ Link } to="/insert" sx={{ my: 2, color: 'white', display: 'block' }}>Insert Post</Button>)}
+              {(localStorage.getItem("isLogined") != "true" && <><Button component={ Link } to="/register" sx={{ my: 2, color: 'white', display: 'block' }}>Signup</Button>
+              <Button component={ Link } to="/login" sx={{ my: 2, color: 'white', display: 'block' }}>Login</Button></>)}
+          </Box> 
 
-          <Box sx={{ flexGrow: 0 }}>
+         {(props.user &&  <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+              <Button variant='outline' onClick={handleOpenUserMenu} sx={{ p: 0 }} endIcon={<KeyboardArrowDownIcon />}>
+                  <Typography variant="p">{props.user.name}</Typography>
+              </Button>
+            </Tooltip> 
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -117,13 +127,11 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={() => logout()}>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
-          </Box>
+          </Box>)}
         </Toolbar>
       </Container>
     </AppBar>
