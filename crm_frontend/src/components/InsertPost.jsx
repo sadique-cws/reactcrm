@@ -15,7 +15,7 @@ export default function InsertPost() {
 
     const [formdata, setFormdata] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
-
+    const [image, setImage] = useState()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,22 +29,30 @@ export default function InsertPost() {
         setCategory_id("");
     }
     const handleClick = () => {
+        const formData = new FormData()
         setFormdata([{
             "title": title,
             "author": author,
             "category_id": category_id,
             "content" : content, 
         }]);
+        console.log(formData)
+        formData.append('title',title)
+        formData.append('content',content)
+        formData.append('author',author)
+        formData.append('image',image)
+        formData.append('category_id',category_id)
 
         axios({
             method:"post",
             url: "http://localhost:8000/api/post",
-            data: {
-                title: title,
-                author : author,
-                category_id: category_id,
-                content: content
-            },
+            data:formData,
+            // data: {
+            //     title: title,
+            //     author : author,
+            //     category_id: category_id,
+            //     content: content
+            // },
         });
 
         setFormdata([])
@@ -86,6 +94,7 @@ export default function InsertPost() {
                         
                     </Select>
                 </FormControl>
+                <input type="file" onChange={(e)=>setImage(e.target.files[0])} />
                 <TextField fullWidth multiline id="outlined-required" value={content} onChange={(e)=> setContent(e.target.value)}  rows={7} label="content"  />
 
                 <Button variant="contained" onClick={handleClick} sx={{ width:"100%",m:1 }}>Insert Post</Button>

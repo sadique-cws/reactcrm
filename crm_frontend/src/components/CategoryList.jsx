@@ -1,13 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/Inbox';
+
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import { MenuItem,Typography,Button,Menu
+} from '@mui/material';
 
 export default function CategoryList() {
 
@@ -24,22 +22,51 @@ export default function CategoryList() {
  
     useEffect(() => getData(),[])
 
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+   
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '100%', maxWidth: 360,  }}>
       <nav aria-label="main mailbox folders">
-        <List>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        sx={{ color:'white',background:'transparent' }}
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+
+      >
+        Category
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {data.map((data,i) => (
+        <MenuItem key={i}>
+         <Typography   onClick={handleClose}>{data.cat_title}</Typography>
+        </MenuItem>
+
+        ))}
+      </Menu>
+        {/* <MenuItem>
          {data.map((data,i) => (
-              <ListItem key={i} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary={data.cat_title} />
-              </ListItemButton>
-            </ListItem>
-           
+             <Typography key={i} disablePadding>{data.cat_title}</Typography>  
          ))}
-        </List>
+        </MenuItem> */}
       </nav>
      
     </Box>

@@ -20,6 +20,7 @@ class PostController extends Controller
         $p->author = $request->author;
         $p->content = $request->content;
         $p->category_id = $request->category_id;
+        $p->image = $request->image->store('public/image');
         $p->save();
         return ['msg'=>"data inserted successfully"];
     }

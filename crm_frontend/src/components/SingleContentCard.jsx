@@ -16,28 +16,27 @@ export default function SingleContentCard() {
   },[])
 
   return (
-    <Card sx={{ display: 'flex', marginBottom:3 }}>
-      <CardMedia
-        component="img"
-        sx={{ width: 151 }}
-        image="https://mui.com/static/images/cards/live-from-space.jpg"
-        alt={ data.title }
-      />
+    <Card sx={{ display: 'flex', marginBottom:3,height:'auto' }}> 
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5">
+          <Typography component="div" variant="h4" sx={{ textDecoration:'underline' }}>
             { data.title }
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
-            {data.author}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
+          </Typography>   
+          <Typography variant="subtitle1" color="text.secondary" sx={{ marginTop:'30px' }} component="div">
             {data.content}
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ marginTop:'15px' }} component="div">
+            By:{data.author}
           </Typography>
         </CardContent>
         
       </Box>
-      
+      <CardMedia
+        component="img"
+        
+        image="https://images.moneycontrol.com/static-mcnews/2021/08/sensex_nifty_sensexdown.jpg?impolicy=website&width=500&height=431"
+        alt={ data.title }
+      />
     </Card>
   );
 }
